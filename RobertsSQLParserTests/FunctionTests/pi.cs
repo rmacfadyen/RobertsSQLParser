@@ -14,10 +14,9 @@ namespace RobertsSQLParserTests.FunctionTests
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
 
             var rc = p.CriteriaToSafeSql("1 = pi()");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = pi()", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
         }
         [TestMethod]
         public void pi_invalid_args()

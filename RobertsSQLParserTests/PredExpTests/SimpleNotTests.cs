@@ -19,10 +19,9 @@ namespace RobertsSQLParserTests.PredExpTests
         public void SimpleNot()
         {
             var rc = p.CriteriaToSafeSql("not IssueId = 17");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("not IssueId = 17", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
         }
     }
 }

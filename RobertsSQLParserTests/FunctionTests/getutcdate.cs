@@ -13,10 +13,9 @@ namespace RobertsSQLParserTests.FunctionTests
             var p = new RobertsSQLParser.QueryParser();
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
             var rc = p.CriteriaToSafeSql("1 = getutcdate()");
+            Assert.AreEqual("1 = getutcdate()", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails); 
             Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual("1 = getutcdate()", rc.SafeSql);
-            Assert.AreEqual(null, rc.ErrorDetails);
         }
         [TestMethod]
         public void getutcdate_invalid_args()

@@ -14,10 +14,9 @@ namespace RobertsSQLParserTests.PredExpTests
             var p = new RobertsSQLParser.QueryParser();
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
             var rc = p.CriteriaToSafeSql("Issues.IssueId in (select A.IssueId from dbo.QbsIssueProductVersions A where A.ProjectId = 61 and A.QbsProductVersionCode = '5.0.00' and A.QbsBuildVersion = (select max(D.QbsBuildVersion) from dbo.QbsIssueProductVersions D where D.ProjectId = 61 and D.QbsProductVersionCode = '5.0.00'))");
+            Assert.AreEqual(           "Issues.IssueId in (select A.IssueId from dbo.QbsIssueProductVersions A where A.ProjectId = 61 and A.QbsProductVersionCode = '5.0.00' and A.QbsBuildVersion = (select max(D.QbsBuildVersion) from dbo.QbsIssueProductVersions D where D.ProjectId = 61 and D.QbsProductVersionCode = '5.0.00'))", rc.SafeSql);
+            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
-            Assert.AreEqual(           "Issues.IssueId in (select A.IssueId from dbo.QbsIssueProductVersions A where A.ProjectId = 61 and A.QbsProductVersionCode = '5.0.00' and A.QbsBuildVersion = (select max(D.QbsBuildVersion) from dbo.QbsIssueProductVersions D where D.ProjectId = 61 and D.QbsProductVersionCode = '5.0.00'))", rc.SafeSql); 
-            Assert.AreEqual(null, rc.ErrorDetails);
         }
 
         [TestMethod]
@@ -31,8 +30,8 @@ namespace RobertsSQLParserTests.PredExpTests
             var p = new RobertsSQLParser.QueryParser();
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
             var rc = p.CriteriaToSafeSql("Issues.IssueId in (1, 2)", FriendlyName);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("Issues.IssueNumber in (1, 2)", rc.SafeSql);
+            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.IsTrue(rc.IsSafe);
         }
 

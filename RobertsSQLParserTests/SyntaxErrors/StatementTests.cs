@@ -11,9 +11,9 @@ namespace RobertsSQLParserTests.SyntaxErrors
             var p = new RobertsSQLParser.QueryParser();            
             
             var rc = p.CriteriaToSafeSql("select * from Issues");
-            Assert.IsFalse(rc.IsSafe);
-            Assert.AreEqual(null, rc.SafeSql);
             Assert.AreEqual("Incorrect syntax near 'Issues' (column 14)", rc.ErrorDetails);
+            Assert.AreEqual(null, rc.SafeSql);
+            Assert.IsFalse(rc.IsSafe);
         }
 
         [TestMethod]
@@ -22,9 +22,9 @@ namespace RobertsSQLParserTests.SyntaxErrors
             var p = new RobertsSQLParser.QueryParser();            
             
             var rc = p.CriteriaToSafeSql("1 = 1 ; select * from Issues");
-            Assert.IsFalse(rc.IsSafe);
-            Assert.AreEqual(null, rc.SafeSql);
             Assert.AreEqual("Incorrect syntax near ';' (column 6)", rc.ErrorDetails);
+            Assert.AreEqual(null, rc.SafeSql);
+            Assert.IsFalse(rc.IsSafe);
         }
     }
 }

@@ -12,10 +12,9 @@ namespace RobertsSQLParserTests.PredExpTests
             
             
             var rc = p.CriteriaToSafeSql("1 = dbo.functionname()");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = dbo.functionname()", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
         }
 
         [TestMethod]
@@ -25,10 +24,9 @@ namespace RobertsSQLParserTests.PredExpTests
             p.Permitted.UserDefinedFunctions.Add("dbo.functionname");
             
             var rc = p.CriteriaToSafeSql("1 = dbo.functionname(ColumnName)");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = dbo.functionname(ColumnName)", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
         }
 
         [TestMethod]
@@ -38,10 +36,9 @@ namespace RobertsSQLParserTests.PredExpTests
             p.Permitted.UserDefinedFunctions.Add("dbo.functionname");
 
             var rc = p.CriteriaToSafeSql("1 = dbo.functionname(ColumnName, Column2)");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = dbo.functionname(ColumnName, Column2)", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
         }
 
         [TestMethod]
@@ -51,10 +48,9 @@ namespace RobertsSQLParserTests.PredExpTests
             
             
             var rc = p.CriteriaToSafeSql("1 = dbo.functionname(ColumnName, Column2, Column3)");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = dbo.functionname(ColumnName, Column2, Column3)", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
         }
 
         [TestMethod]
@@ -63,10 +59,9 @@ namespace RobertsSQLParserTests.PredExpTests
             var p = new RobertsSQLParser.QueryParser();            
             
             var rc = p.CriteriaToSafeSql("1 = functionname(ColumnName, Column2, Column3)");
-            Assert.IsFalse(rc.IsSafe);
-            Assert.AreEqual(null, rc.SafeSql);
             Assert.AreEqual("Unknown function: functionname", rc.ErrorDetails);
+            Assert.AreEqual(null, rc.SafeSql);
+            Assert.IsFalse(rc.IsSafe);
         }
-
     }
 }

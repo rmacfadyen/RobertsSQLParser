@@ -14,8 +14,8 @@ namespace RobertsSQLParserTests.RestrictedItemsTests
             p.Permitted.Variables.Add("@CurrentUserId");
             var rc = p.CriteriaToSafeSql("exists(select IssueId from Issues as i2 where AssignedToUser = @CurrentUserId2)");
             Assert.AreEqual("Unknown variable: @CurrentUserId2", rc.ErrorDetails);
-            Assert.IsFalse(rc.IsSafe);
             Assert.AreEqual(null, rc.SafeSql);
+            Assert.IsFalse(rc.IsSafe);
         }
 
         [TestMethod]
@@ -25,8 +25,8 @@ namespace RobertsSQLParserTests.RestrictedItemsTests
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
             var rc = p.CriteriaToSafeSql("exists(select IssueId from Issues as i2 where AssignedToUser = @CurrentUserId)");
             Assert.AreEqual("Unknown variable: @CurrentUserId", rc.ErrorDetails);
-            Assert.IsFalse(rc.IsSafe);
             Assert.AreEqual(null, rc.SafeSql);
+            Assert.IsFalse(rc.IsSafe);
         }
 
         [TestMethod]
@@ -36,8 +36,8 @@ namespace RobertsSQLParserTests.RestrictedItemsTests
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
             p.Permitted.Variables.Add("@CurrentUserId");
             var rc = p.CriteriaToSafeSql("exists(select IssueId from Issues as i2 where AssignedToUser = @CURRENTUSERID)");
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("exists(select IssueId from Issues as i2 where AssignedToUser = @CURRENTUSERID)", rc.SafeSql);
+            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.IsTrue(rc.IsSafe);
         }
     }

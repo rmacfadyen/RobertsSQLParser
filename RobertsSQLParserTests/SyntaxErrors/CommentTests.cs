@@ -12,8 +12,8 @@ namespace RobertsSQLParserTests.SyntaxErrors
             
             var rc = p.CriteriaToSafeSql("1 = 2 /* comment */");
             Assert.AreEqual("Incorrect syntax near '*' (column 7)", rc.ErrorDetails);
-            Assert.IsFalse(rc.IsSafe);
             Assert.AreEqual(null, rc.SafeSql);
+            Assert.IsFalse(rc.IsSafe);
         }
 
         [TestMethod]
@@ -22,10 +22,9 @@ namespace RobertsSQLParserTests.SyntaxErrors
             var p = new RobertsSQLParser.QueryParser();            
             
             var rc = p.CriteriaToSafeSql("1 = 2 ");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = 2", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
         }
 
         [TestMethod]
@@ -34,10 +33,9 @@ namespace RobertsSQLParserTests.SyntaxErrors
             var p = new RobertsSQLParser.QueryParser();            
             
             var rc = p.CriteriaToSafeSql("1 = 2 -- comment");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = 2", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
         }
     }
 }

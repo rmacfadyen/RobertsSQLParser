@@ -13,10 +13,9 @@ namespace RobertsSQLParserTests.FunctionTests
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
 
             var rc = p.CriteriaToSafeSql("1 = " + Function + "()");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = " + Function + "()", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
 
             rc = p.CriteriaToSafeSql("1 = " + Function + "(1)");
             Assert.AreEqual("Function " + Function + " requires 0 arguments", rc.ErrorDetails);
@@ -33,10 +32,9 @@ namespace RobertsSQLParserTests.FunctionTests
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
 
             var rc = p.CriteriaToSafeSql("1 = " + Function + "(2)");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = " + Function + "(2)", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
 
             rc = p.CriteriaToSafeSql("1 = " + Function + "()");
             Assert.AreEqual("Function " + Function + " requires 1 arguments", rc.ErrorDetails); 
@@ -53,10 +51,9 @@ namespace RobertsSQLParserTests.FunctionTests
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
 
             var rc = p.CriteriaToSafeSql("1 = " + Function + "(2, 3)");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = " + Function + "(2, 3)", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
 
             rc = p.CriteriaToSafeSql("1 = " + Function + "()");
             Assert.AreEqual("Function " + Function + " requires 2 arguments", rc.ErrorDetails);
@@ -77,10 +74,9 @@ namespace RobertsSQLParserTests.FunctionTests
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
 
             var rc = p.CriteriaToSafeSql("1 = " + Function + "(2, 3, 4)");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = " + Function + "(2, 3, 4)", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
 
             rc = p.CriteriaToSafeSql("1 = " + Function + "()");
             Assert.AreEqual("Function " + Function + " requires 3 arguments", rc.ErrorDetails);
@@ -105,10 +101,9 @@ namespace RobertsSQLParserTests.FunctionTests
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
 
             var rc = p.CriteriaToSafeSql("1 = " + Function + "(2, 3, 4, 5)");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = " + Function + "(2, 3, 4, 5)", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
 
             rc = p.CriteriaToSafeSql("1 = " + Function + "()");
             Assert.AreEqual("Function " + Function + " requires 4 arguments", rc.ErrorDetails);
@@ -137,22 +132,19 @@ namespace RobertsSQLParserTests.FunctionTests
             p.Permitted.PermittedColumns.Add(new Regex(".*"));
 
             var rc = p.CriteriaToSafeSql("1 = (select " + AggregateName + "(Column) from Table)");
+            Assert.AreEqual("1 = (select " + AggregateName + "(Column) from Table)", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails); 
             Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual("1 = (select " + AggregateName + "(Column) from Table)", rc.SafeSql);
-            Assert.AreEqual(null, rc.ErrorDetails);
             
             rc = p.CriteriaToSafeSql("1 = " + AggregateName + "(1) ");
-            Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
             Assert.AreEqual("1 = " + AggregateName + "(1)", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
-           
-            rc = p.CriteriaToSafeSql("1 = " + AggregateName + "(distinct 1) ");
             Assert.IsTrue(rc.IsSafe);
-            Assert.AreEqual(null, rc.ErrorDetails);
+
+            rc = p.CriteriaToSafeSql("1 = " + AggregateName + "(distinct 1) ");
             Assert.AreEqual("1 = " + AggregateName + "(distinct 1)", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
+            Assert.IsTrue(rc.IsSafe);
 
             rc = p.CriteriaToSafeSql("1 = " + AggregateName + "( )");
             Assert.AreEqual("Function " + AggregateName + " requires 1 or 2 arguments", rc.ErrorDetails);
