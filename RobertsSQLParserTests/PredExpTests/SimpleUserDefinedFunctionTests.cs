@@ -8,7 +8,8 @@ namespace RobertsSQLParserTests.PredExpTests
         [TestMethod]
         public void SimpleUDF_NoParameters()
         {
-            var p = new RobertsSQLParser.QueryParser();            p.Permitted.UserDefinedFunctions.Add("dbo.functionname");
+            var p = new RobertsSQLParser.QueryParser();            
+            p.Permitted.UserDefinedFunctions.Add("dbo.functionname", 0);
             
             
             var rc = p.CriteriaToSafeSql("1 = dbo.functionname()");
@@ -21,7 +22,7 @@ namespace RobertsSQLParserTests.PredExpTests
         public void SimpleUDF_1Parameters()
         {
             var p = new RobertsSQLParser.QueryParser();            
-            p.Permitted.UserDefinedFunctions.Add("dbo.functionname");
+            p.Permitted.UserDefinedFunctions.Add("dbo.functionname", 1);
             
             var rc = p.CriteriaToSafeSql("1 = dbo.functionname(ColumnName)");
             Assert.AreEqual("1 = dbo.functionname(ColumnName)", rc.SafeSql);
@@ -33,7 +34,7 @@ namespace RobertsSQLParserTests.PredExpTests
         public void SimpleUDF_2Parameters()
         {
             var p = new RobertsSQLParser.QueryParser();            
-            p.Permitted.UserDefinedFunctions.Add("dbo.functionname");
+            p.Permitted.UserDefinedFunctions.Add("dbo.functionname", 2);
 
             var rc = p.CriteriaToSafeSql("1 = dbo.functionname(ColumnName, Column2)");
             Assert.AreEqual("1 = dbo.functionname(ColumnName, Column2)", rc.SafeSql);
@@ -44,7 +45,8 @@ namespace RobertsSQLParserTests.PredExpTests
         [TestMethod]
         public void SimpleUDF_3Parameters()
         {
-            var p = new RobertsSQLParser.QueryParser();            p.Permitted.UserDefinedFunctions.Add("dbo.functionname");
+            var p = new RobertsSQLParser.QueryParser();            
+            p.Permitted.UserDefinedFunctions.Add("dbo.functionname", 3);
             
             
             var rc = p.CriteriaToSafeSql("1 = dbo.functionname(ColumnName, Column2, Column3)");

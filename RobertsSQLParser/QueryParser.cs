@@ -12,8 +12,20 @@ namespace RobertsSQLParser
 
     public class PermittedItems
     {
-        public IList<string> Variables { get; } = new List<string>();
-        public IList<string> UserDefinedFunctions { get; } = new List<string>();
+        /// <summary>
+        /// Map of user defined function names and the number of arguments each take
+        /// </summary>
+        public IDictionary<string, int> UserDefinedFunctions { get; } = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// List of user defined variable names
+        /// </summary>
+        public ICollection<string> Variables { get; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// List of regular expressions that match permitted schema items, like
+        /// column names or table and column names.
+        /// </summary>
         public IList<Regex> PermittedColumns { get; } = new List<Regex>();
     }
 

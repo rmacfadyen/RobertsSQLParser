@@ -9,7 +9,7 @@ namespace RobertsSQLParserTests.RestrictedItemsTests
         public void ExplicitlyAllowedFunction()
         {
             var p = new RobertsSQLParser.QueryParser();            
-            p.Permitted.UserDefinedFunctions.Add("dbo.Bugger");
+            p.Permitted.UserDefinedFunctions.Add("dbo.Bugger", 1);
             var rc = p.CriteriaToSafeSql("dbo.Bugger(IssueId) = 1");
             Assert.AreEqual("dbo.Bugger(IssueId) = 1", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
@@ -20,7 +20,7 @@ namespace RobertsSQLParserTests.RestrictedItemsTests
         public void UnknownFunction()
         {
             var p = new RobertsSQLParser.QueryParser();            
-            p.Permitted.UserDefinedFunctions.Add("dbo.Bugger");
+            p.Permitted.UserDefinedFunctions.Add("dbo.Bugger", 1);
             var rc = p.CriteriaToSafeSql("dbo.Bugger2(IssueId) = 1");
             Assert.AreEqual("Unknown function: dbo.Bugger2", rc.ErrorDetails);
             Assert.AreEqual(null, rc.SafeSql);
@@ -31,7 +31,7 @@ namespace RobertsSQLParserTests.RestrictedItemsTests
         public void NonDboFunction()
         {
             var p = new RobertsSQLParser.QueryParser();            
-            p.Permitted.UserDefinedFunctions.Add("dbo.Bugger");
+            p.Permitted.UserDefinedFunctions.Add("dbo.Bugger", 1);
             var rc = p.CriteriaToSafeSql("Bugger(IssueId) = 1");
             Assert.AreEqual("Unknown function: Bugger", rc.ErrorDetails);
             Assert.AreEqual(null, rc.SafeSql);
@@ -42,7 +42,7 @@ namespace RobertsSQLParserTests.RestrictedItemsTests
         public void DifferentOwnerFunction()
         {
             var p = new RobertsSQLParser.QueryParser();            
-            p.Permitted.UserDefinedFunctions.Add("dbo.Bugger");
+            p.Permitted.UserDefinedFunctions.Add("dbo.Bugger", 1);
             var rc = p.CriteriaToSafeSql("User.Bugger(IssueId) = 1");
             Assert.AreEqual("Unknown function: User.Bugger", rc.ErrorDetails);
             Assert.AreEqual(null, rc.SafeSql);
@@ -53,7 +53,7 @@ namespace RobertsSQLParserTests.RestrictedItemsTests
         public void CaseInsenitiveFunction()
         {
             var p = new RobertsSQLParser.QueryParser();            
-            p.Permitted.UserDefinedFunctions.Add("dbo.BUGGER");
+            p.Permitted.UserDefinedFunctions.Add("dbo.BUGGER", 1);
             var rc = p.CriteriaToSafeSql("dbo.Bugger(IssueId) = 1");
             Assert.AreEqual("dbo.Bugger(IssueId) = 1", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);
@@ -64,7 +64,7 @@ namespace RobertsSQLParserTests.RestrictedItemsTests
         public void MultipleParameters()
         {
             var p = new RobertsSQLParser.QueryParser();            
-            p.Permitted.UserDefinedFunctions.Add("dbo.BUGGER");
+            p.Permitted.UserDefinedFunctions.Add("dbo.BUGGER", 2);
             var rc = p.CriteriaToSafeSql("dbo.Bugger(IssueId, ProjectId) = 1");
             Assert.AreEqual("dbo.Bugger(IssueId, ProjectId) = 1", rc.SafeSql);
             Assert.AreEqual(null, rc.ErrorDetails);

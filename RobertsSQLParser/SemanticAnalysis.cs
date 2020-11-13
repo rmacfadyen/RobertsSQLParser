@@ -12,16 +12,16 @@ namespace RobertsSQLParser
     {
         public readonly IList<string> Errors = new List<string>();
         
-        private readonly IList<string> _userDefinedFunctions;
-        private readonly IList<string> _permittedVariables;
+        private readonly IDictionary<string, int> _userDefinedFunctions;
+        private readonly ICollection<string> _permittedVariables;
         private readonly IList<Regex> _permittedSchemasElements;
         
 
-        public SemanticAnalysis(IList<string> UserDefinedFunctions, IList<string> Variables, IList<Regex> PermittedSchemasElements)
+        public SemanticAnalysis(IDictionary<string, int> UserDefinedFunctions, ICollection<string> Variables, IList<Regex> PermittedSchemasElements)
         {
-            _userDefinedFunctions = UserDefinedFunctions ?? new List<string>();
-            _permittedVariables = Variables ?? new List<string>();
-            _permittedSchemasElements = PermittedSchemasElements ?? new List<Regex>();
+            _userDefinedFunctions = UserDefinedFunctions ?? throw new ArgumentNullException(nameof(UserDefinedFunctions));
+            _permittedVariables = Variables ?? throw new ArgumentNullException(nameof(Variables));
+            _permittedSchemasElements = PermittedSchemasElements ?? throw new ArgumentNullException(nameof(PermittedSchemasElements));
         }
 
  
@@ -97,7 +97,7 @@ namespace RobertsSQLParser
         {
             var FunctionName = GetFunctionName(context);
 
-            if (!(_userDefinedFunctions.Contains(FunctionName, StringComparer.OrdinalIgnoreCase)
+            if (!(_userDefinedFunctions.ContainsKey(FunctionName)
                   || FunctionConstants.FunctionArgs.ContainsKey(FunctionName)
                   || FunctionConstants.AgregateNames.Contains(FunctionName) 
                   || FunctionConstants.SpecialFunctions.ContainsKey(FunctionName)))
@@ -118,15 +118,18 @@ namespace RobertsSQLParser
             var FunctionName = GetFunctionName(context);
 
             //
-            // Count the number of arguements (less 1 for the function name, and
-            // two for the open/close parenthesis). If more than 1 argument
-            // ignore the comma between each argument.
+            // Count the number of arguements. Each argument is an Expr or a * so
+            // just count those.
             //
-            var NumArguments = context.children.Count - 3;
-            if (NumArguments > 1)
+            int NumArguments = 0;
+            foreach (var c in context.children)
             {
-                NumArguments = NumArguments / 2 + 1;
-            }
+                if (c is SqlParser.ExprContext
+                    || c is ITerminalNode && (c as ITerminalNode).Symbol.Type == SqlParser.STAR)
+                {
+                    NumArguments += 1;
+                }
+            }    
 
             //
             // Special functions have a variable number of arguments that need
@@ -175,13 +178,13 @@ namespace RobertsSQLParser
             }
 
             //
-            // Agregates have either 1 or two arguments (no commas)
+            // Agregates have 1 argument (no commas)
             //
             if (FunctionConstants.AgregateNames.Contains(FunctionName))
             {
-                if (NumArguments != 1 && NumArguments != 2)
+                if (NumArguments != 1)
                 {
-                    Errors.Add($"Function {FunctionName} requires 1 or 2 arguments");
+                    Errors.Add($"Function {FunctionName} requires 1 arguments");
                     return false;
                 }
 
@@ -189,10 +192,17 @@ namespace RobertsSQLParser
             }
 
             //
-            // Hmm...
+            // Must be a user defined function
             //
+            if (_userDefinedFunctions[FunctionName] != NumArguments)
+            {
+                Errors.Add($"Function {FunctionName} requires {_userDefinedFunctions[FunctionName]} arguments but called with {NumArguments}");
+                return false;
+            }
+
             return true;
         }
+    
 
 
         private string GetFunctionName(SqlParser.FunctionCallContext context)

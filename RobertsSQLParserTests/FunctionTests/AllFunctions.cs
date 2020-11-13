@@ -147,11 +147,11 @@ namespace RobertsSQLParserTests.FunctionTests
             Assert.IsTrue(rc.IsSafe);
 
             rc = p.CriteriaToSafeSql("1 = " + AggregateName + "( )");
-            Assert.AreEqual("Function " + AggregateName + " requires 1 or 2 arguments", rc.ErrorDetails);
+            Assert.AreEqual("Function " + AggregateName + " requires 1 arguments", rc.ErrorDetails);
             Assert.IsFalse(rc.IsSafe);
 
             rc = p.CriteriaToSafeSql("1 = " + AggregateName + "(distinct 2, 3)");
-            Assert.AreEqual("Function " + AggregateName + " requires 1 or 2 arguments", rc.ErrorDetails);
+            Assert.AreEqual("Function " + AggregateName + " requires 1 arguments", rc.ErrorDetails);
             Assert.IsFalse(rc.IsSafe);
         }
 
