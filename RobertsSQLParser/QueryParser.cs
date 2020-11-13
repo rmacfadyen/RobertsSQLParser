@@ -18,8 +18,15 @@ namespace RobertsSQLParser
     }
 
 
+    public interface IQueryParser
+    {
+        PermittedItems Permitted { get; }
+        (bool IsSafe, string ErrorDetails, string SafeSql) CriteriaToSafeSql(string Query, IDictionary<string, string> ColumnNameReplacementsMap = null);
+        (bool IsSafe, string ErrorDetails, string SafeSql) SelectToSafeSql(string Query, IDictionary<string, string> ColumnNameReplacementsMap = null);
+    }
 
-    public class QueryParser
+
+    public class QueryParser : IQueryParser
     {
 
         public PermittedItems Permitted { get; } = new PermittedItems();
@@ -29,24 +36,6 @@ namespace RobertsSQLParser
         {
 
         }
-
-
-
-        public bool ReliesOnDate(string Query, IList<string> DateFields)
-        {
-            _ = Query ?? throw new ArgumentNullException(nameof(Query));
-
-            var (errors, tree, _) = DoParse(Query, (p) => p.root());
-            if (errors.Count != 0)
-            {
-                return false;
-            }
-
-            var ColumnsUsed = ColumnsUsedInSelectionCriteria.GetColumnsUsed(tree);
-
-            return (from d in DateFields where ColumnsUsed.Contains(d, StringComparer.OrdinalIgnoreCase) select d).Any();
-        }
-
 
 
 
