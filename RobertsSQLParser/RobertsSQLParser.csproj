@@ -5,6 +5,11 @@
     <OutputType>Library</OutputType>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <RepositoryUrl>https://github.com/rmacfadyen/RobertsSQLParser</RepositoryUrl>
+    <Version>0.5.0</Version>
+    <PackageProjectUrl>https://github.com/rmacfadyen/RobertsSQLParser/README.md</PackageProjectUrl>
+    <PackageTags>SQL ANTLR</PackageTags>
+    <Description>An SQL Parser to verify a query is safe</Description>
+    <Authors>rmacfadyen</Authors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.8.0" />
-    <PackageReference Include="Antlr4BuildTasks" Version="8.4.0" />
+    <PackageReference Include="Antlr4BuildTasks" Version="8.7.0" />
   </ItemGroup>
 
 </Project>
