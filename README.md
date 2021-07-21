@@ -1,6 +1,6 @@
 # Robert's Safe SQL Parser
 
-Accepting SQL from a client application is a security hole. 
+Accepting SQL from a client application is a security risk. 
 This library parses a string of SQL to ensure that it only contains 
 a SELECT statement, or the criteria portion of a SELECT statement.
 
